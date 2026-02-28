@@ -1028,14 +1028,7 @@
         return;
       }
       
-      // Load results from localStorage if data SDK not available
-      let myResults = allQuizResults.filter(r => r.student_name === currentStudentName);
-      if (myResults.length === 0) {
-        const savedResults = localStorage.getItem('quizResults_' + currentStudentName);
-        if (savedResults) {
-          myResults = JSON.parse(savedResults);
-        }
-      }
+      const myResults = allQuizResults.filter(r => r.student_name === currentStudentName);
       
       if (myResults.length === 0) {
         content.innerHTML = `
@@ -1148,16 +1141,32 @@
       
       const content = document.getElementById('teacher-preview-content');
       content.innerHTML = `
-        <div class="text-center py-8">
-          <div class="text-6xl mb-4">🔐</div>
-          <p class="text-gray-600 text-lg mb-4">Masukkan password untuk melihat semua soal</p>
-          <input type="password" id="teacher-password" placeholder="Password" 
-            class="px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none mb-4 w-64"
-            onkeypress="if(event.key==='Enter') checkTeacherPassword()">
-          <br>
-          <button onclick="checkTeacherPassword()" class="btn-primary text-white px-6 py-3 rounded-full font-bold">
-            🔓 Buka
-          </button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <!-- Preview Soal -->
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 shadow-lg">
+            <div class="text-5xl mb-4 text-center">👀</div>
+            <h3 class="text-xl font-bold text-blue-700 mb-4 text-center">Lihat Semua Soal</h3>
+            <p class="text-gray-600 text-sm text-center mb-4">Masukkan password untuk preview</p>
+            <input type="password" id="teacher-password" placeholder="Password" 
+              class="w-full px-4 py-3 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none mb-4 text-center"
+              onkeypress="if(event.key==='Enter') checkTeacherPassword()">
+            <button onclick="checkTeacherPassword()" class="w-full btn-primary text-white px-6 py-3 rounded-full font-bold">
+              🔓 Buka Preview
+            </button>
+          </div>
+          
+          <!-- Edit Soal -->
+          <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-6 shadow-lg">
+            <div class="text-5xl mb-4 text-center">✏️</div>
+            <h3 class="text-xl font-bold text-orange-700 mb-4 text-center">Edit Soal</h3>
+            <p class="text-gray-600 text-sm text-center mb-4">Masukkan password untuk edit</p>
+            <input type="password" id="edit-password" placeholder="Password" 
+              class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 focus:border-orange-500 focus:outline-none mb-4 text-center"
+              onkeypress="if(event.key==='Enter') checkEditPassword()">
+            <button onclick="checkEditPassword()" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg transition-all">
+              🔓 Buka Edit
+            </button>
+          </div>
         </div>
       `;
     }
@@ -1169,8 +1178,168 @@
       } else {
         document.getElementById('teacher-password').classList.add('border-red-500');
         document.getElementById('teacher-password').value = '';
-        document.getElementById('teacher-password').placeholder = 'Password salah! Coba lagi...';
+        document.getElementById('teacher-password').placeholder = 'Password salah!';
+        setTimeout(() => {
+          document.getElementById('teacher-password').classList.remove('border-red-500');
+          document.getElementById('teacher-password').placeholder = 'Password';
+        }, 3000);
       }
+    }
+    
+    function checkEditPassword() {
+      const password = document.getElementById('edit-password').value;
+      if (password === 'JanganYa') {
+        showEditQuestions();
+      } else {
+        document.getElementById('edit-password').classList.add('border-red-500');
+        document.getElementById('edit-password').value = '';
+        document.getElementById('edit-password').placeholder = 'Password salah!';
+        setTimeout(() => {
+          document.getElementById('edit-password').classList.remove('border-red-500');
+          document.getElementById('edit-password').placeholder = 'Password';
+        }, 3000);
+      }
+    }
+    
+    function showEditQuestions() {
+      const content = document.getElementById('teacher-preview-content');
+      
+      let html = `
+        <div class="mb-6">
+          <h3 class="text-2xl font-bold text-orange-700 mb-4">✏️ Edit Soal</h3>
+          <p class="text-gray-600 mb-4">Pilih kelas dan materi untuk edit soal:</p>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+      `;
+      
+      Object.entries(questionsDB).forEach(([key, topic]) => {
+        html += `
+          <button onclick="editTopicQuestions('${key}')" 
+            class="bg-white rounded-xl p-4 hover:shadow-lg transition-all border-2 border-orange-200 hover:border-orange-500">
+            <div class="text-3xl mb-2">${topic.icon}</div>
+            <div class="font-bold text-sm">Kelas ${topic.grade}</div>
+            <div class="text-xs text-gray-600">${topic.title}</div>
+          </button>
+        `;
+      });
+      
+      html += `
+          </div>
+          <button onclick="showTeacherPreview()" class="btn-primary text-white px-6 py-3 rounded-full font-bold">
+            ← Kembali
+          </button>
+        </div>
+      `;
+      
+      content.innerHTML = html;
+    }
+    
+    function editTopicQuestions(topicKey) {
+      const topic = questionsDB[topicKey];
+      const content = document.getElementById('teacher-preview-content');
+      
+      let html = `
+        <div class="mb-4">
+          <button onclick="showEditQuestions()" class="btn-primary text-white px-4 py-2 rounded-full font-bold">
+            ← Kembali ke Daftar Materi
+          </button>
+        </div>
+        <h3 class="text-2xl font-bold text-orange-700 mb-6">${topic.icon} Edit: ${topic.title} (Kelas ${topic.grade})</h3>
+        <div class="space-y-6 max-h-96 overflow-y-auto">
+      `;
+      
+      topic.questions.forEach((q, i) => {
+        html += `
+          <div class="bg-white rounded-xl p-6 border-2 border-orange-200 shadow-md">
+            <h4 class="font-bold text-lg text-orange-700 mb-4">Soal ${i + 1}</h4>
+            
+            <!-- Question -->
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-gray-700 mb-2">📝 Pertanyaan:</label>
+              <textarea id="q_${i}" class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 focus:border-orange-500 focus:outline-none text-sm" rows="2">${q.q}</textarea>
+            </div>
+            
+            <!-- Options -->
+            ${q.options.map((opt, j) => `
+              <div class="mb-3">
+                <label class="block text-sm font-bold text-gray-700 mb-1">
+                  ${String.fromCharCode(65 + j)}. Pilihan Jawaban:
+                  ${j === q.correct ? '<span class="ml-2 bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold">✓ BENAR</span>' : ''}
+                </label>
+                <div class="flex gap-2">
+                  <input type="text" id="opt_${i}_${j}" value="${opt}" 
+                    class="flex-1 px-3 py-2 rounded-lg border-2 border-gray-200 focus:border-orange-500 focus:outline-none text-sm">
+                  <button onclick="setCorrectAnswer('${topicKey}', ${i}, ${j})" 
+                    class="px-3 py-2 rounded-lg font-bold transition-all ${j === q.correct ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-green-300'}">
+                    ${j === q.correct ? '✓' : 'Set'}
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+            
+            <!-- Explanation -->
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-gray-700 mb-2">💡 Penjelasan:</label>
+              <textarea id="exp_${i}" class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 focus:border-orange-500 focus:outline-none text-sm" rows="2">${q.explanation}</textarea>
+            </div>
+            
+            <button onclick="deleteQuestion('${topicKey}', ${i})" 
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-bold transition-all">
+              🗑️ Hapus Soal Ini
+            </button>
+          </div>
+        `;
+      });
+      
+      html += `
+        </div>
+        <div class="mt-6 flex gap-4">
+          <button onclick="saveEditedQuestions('${topicKey}')" class="btn-success text-white px-6 py-3 rounded-full font-bold flex-1">
+            💾 Simpan Perubahan
+          </button>
+          <button onclick="showEditQuestions()" class="btn-primary text-white px-6 py-3 rounded-full font-bold flex-1">
+            ← Kembali
+          </button>
+        </div>
+      `;
+      
+      content.innerHTML = html;
+    }
+    
+    function setCorrectAnswer(topicKey, qIndex, optIndex) {
+      const topic = questionsDB[topicKey];
+      topic.questions[qIndex].correct = optIndex;
+      editTopicQuestions(topicKey);
+    }
+    
+    function deleteQuestion(topicKey, qIndex) {
+      if (confirm('Yakin hapus soal ini?')) {
+        const topic = questionsDB[topicKey];
+        topic.questions.splice(qIndex, 1);
+        if (topic.questions.length < 10) {
+          topic.questions.push({
+            q: 'Soal Baru',
+            options: ['Opsi A', 'Opsi B', 'Opsi C', 'Opsi D'],
+            correct: 0,
+            explanation: 'Penjelasan baru'
+          });
+        }
+        editTopicQuestions(topicKey);
+      }
+    }
+    
+    function saveEditedQuestions(topicKey) {
+      const topic = questionsDB[topicKey];
+      
+      topic.questions.forEach((q, i) => {
+        q.q = document.getElementById(`q_${i}`).value;
+        q.options.forEach((_, j) => {
+          q.options[j] = document.getElementById(`opt_${i}_${j}`).value;
+        });
+        q.explanation = document.getElementById(`exp_${i}`).value;
+      });
+      
+      alert('✅ Soal berhasil diperbarui!');
+      showEditQuestions();
     }
     
     function displayAllQuestions() {
@@ -1243,40 +1412,14 @@
     function displayAllResults() {
       const content = document.getElementById('all-results-content');
       
-      // Load all results from localStorage for all students
-      let allResults = [...allQuizResults];
-      
-      // Add localStorage results
-      const allStudentNames = new Set();
-      Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('quizResults_')) {
-          const studentName = key.replace('quizResults_', '');
-          allStudentNames.add(studentName);
-        }
-      });
-      
-      allStudentNames.forEach(studentName => {
-        const saved = localStorage.getItem('quizResults_' + studentName);
-        if (saved) {
-          const results = JSON.parse(saved);
-          results.forEach(r => {
-            // Check if not already in allResults
-            if (!allResults.find(existing => 
-              existing.student_name === r.student_name && 
-              existing.quiz_number === r.quiz_number &&
-              existing.completed_at === r.completed_at
-            )) {
-              allResults.push(r);
-            }
-          });
-        }
-      });
-      
-      if (allResults.length === 0) {
+      if (!allQuizResults || allQuizResults.length === 0) {
         content.innerHTML = `
           <div class="text-center py-8">
             <div class="text-6xl mb-4">📝</div>
             <p class="text-gray-600 text-lg">Belum ada siswa yang mengerjakan quiz.</p>
+            <button onclick="showAllResults()" class="btn-primary text-white px-6 py-3 rounded-full font-bold mt-4">
+              🔄 Muat Ulang
+            </button>
           </div>
         `;
         return;
@@ -1284,7 +1427,7 @@
       
       // Calculate per-student statistics
       const studentStats = {};
-      allResults.forEach(r => {
+      allQuizResults.forEach(r => {
         if (!studentStats[r.student_name]) {
           studentStats[r.student_name] = {
             quizzes: 0,
@@ -1299,6 +1442,10 @@
         studentStats[r.student_name].results.push(r);
       });
       
+      const avgAccuracy = allQuizResults.length > 0 
+        ? Math.round(allQuizResults.reduce((sum, r) => sum + r.score, 0) / allQuizResults.length)
+        : 0;
+      
       content.innerHTML = `
         <div class="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-6 mb-6">
           <h3 class="text-xl font-bold text-purple-700 mb-4">📊 Ringkasan</h3>
@@ -1308,18 +1455,18 @@
               <div class="text-sm text-gray-600">Total Siswa</div>
             </div>
             <div class="bg-white rounded-xl p-4 text-center shadow">
-              <div class="text-3xl font-bold text-blue-600">${allResults.length}</div>
+              <div class="text-3xl font-bold text-blue-600">${allQuizResults.length}</div>
               <div class="text-sm text-gray-600">Total Quiz Dikerjakan</div>
             </div>
             <div class="bg-white rounded-xl p-4 text-center shadow">
-              <div class="text-3xl font-bold text-green-600">${Math.round(allResults.reduce((sum, r) => sum + r.score, 0) / allResults.length)}%</div>
+              <div class="text-3xl font-bold text-green-600">${avgAccuracy}%</div>
               <div class="text-sm text-gray-600">Rata-rata Akurasi</div>
             </div>
           </div>
         </div>
         
         <h4 class="font-bold text-purple-700 mb-3">👨‍🎓 Statistik per Siswa:</h4>
-        <div class="overflow-x-auto mb-6">
+        <div class="overflow-x-auto mb-6 bg-white rounded-xl shadow">
           <table class="w-full text-sm">
             <thead class="bg-purple-100">
               <tr>
@@ -1354,7 +1501,7 @@
         </div>
         
         <h4 class="font-bold text-purple-700 mb-3">📋 Semua Hasil Quiz:</h4>
-        <div id="all-results-table" class="overflow-x-auto">
+        <div id="all-results-table" class="overflow-x-auto bg-white rounded-xl shadow">
           <table class="w-full text-sm">
             <thead class="bg-purple-100">
               <tr>
@@ -1367,20 +1514,22 @@
               </tr>
             </thead>
             <tbody>
-              ${allResults.sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at)).map((r, i) => `
-                <tr class="${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}">
-                  <td class="p-3 font-bold">${r.student_name}</td>
-                  <td class="p-3">${r.grade}</td>
-                  <td class="p-3">${r.topic}</td>
-                  <td class="p-3 text-center text-purple-600 font-bold">#${r.quiz_number}</td>
-                  <td class="p-3 text-center">
-                    <span class="px-2 py-1 rounded-full text-xs font-bold ${r.score >= 80 ? 'bg-green-100 text-green-700' : r.score >= 60 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}">
-                      ${r.correct_answers}/${r.total_questions} (${r.score}%)
-                    </span>
-                  </td>
-                  <td class="p-3 text-gray-500">${new Date(r.completed_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
-                </tr>
-              `).join('')}
+              ${allQuizResults
+                .sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at))
+                .map((r, i) => `
+                  <tr class="${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}">
+                    <td class="p-3 font-bold">${r.student_name}</td>
+                    <td class="p-3">${r.grade}</td>
+                    <td class="p-3">${r.topic}</td>
+                    <td class="p-3 text-center text-purple-600 font-bold">#${r.quiz_number}</td>
+                    <td class="p-3 text-center">
+                      <span class="px-2 py-1 rounded-full text-xs font-bold ${r.score >= 80 ? 'bg-green-100 text-green-700' : r.score >= 60 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}">
+                        ${r.correct_answers}/${r.total_questions} (${r.score}%)
+                      </span>
+                    </td>
+                    <td class="p-3 text-gray-500 text-xs">${new Date(r.completed_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                  </tr>
+                `).join('')}
             </tbody>
           </table>
         </div>
@@ -1591,32 +1740,23 @@
       const score = Math.round((correctCount / 10) * 100);
       const quizCountKey = `${currentStudentName}_${currentQuiz.key}`;
       
-      // Prepare quiz result object
-      const quizResult = {
-        student_name: currentStudentName,
-        grade: `Kelas ${currentQuiz.topic.grade}`,
-        topic: currentQuiz.topic.title,
-        score: score,
-        total_questions: 10,
-        correct_answers: correctCount,
-        quiz_number: quizCounts[quizCountKey],
-        completed_at: new Date().toISOString(),
-        answers_detail: JSON.stringify(reviewData.map(r => r.isCorrect ? 1 : 0))
-      };
-      
-      // Save to localStorage (always)
-      const existingResults = localStorage.getItem('quizResults_' + currentStudentName);
-      const savedResults = existingResults ? JSON.parse(existingResults) : [];
-      savedResults.push(quizResult);
-      localStorage.setItem('quizResults_' + currentStudentName, JSON.stringify(savedResults));
-      
       // Save result to Data SDK
       if (window.dataSdk && allQuizResults.length < 999) {
         const submitBtn = document.getElementById('submit-btn');
         submitBtn.disabled = true;
         submitBtn.innerHTML = '⏳ Menyimpan...';
         
-        const result = await window.dataSdk.create(quizResult);
+        const result = await window.dataSdk.create({
+          student_name: currentStudentName,
+          grade: `Kelas ${currentQuiz.topic.grade}`,
+          topic: currentQuiz.topic.title,
+          score: score,
+          total_questions: 10,
+          correct_answers: correctCount,
+          quiz_number: quizCounts[quizCountKey],
+          completed_at: new Date().toISOString(),
+          answers_detail: JSON.stringify(reviewData.map(r => r.isCorrect ? 1 : 0))
+        });
         
         submitBtn.disabled = false;
         submitBtn.innerHTML = '✅ Selesai!';
@@ -1683,5 +1823,5 @@
     // Initialize app
     initApp();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d5317e69518c031',t:'MTc3MjMxNDk2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d52cd9c67d5c031',t:'MTc3MjMxMTkyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
