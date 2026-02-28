@@ -1,0 +1,1600 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latihan Olimpiade Orbit SD Labschool Cibubur</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&amp;family=Comic+Neue:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Nunito', 'Comic Neue', sans-serif; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes bounce-slow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+    
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    .bounce-animation { animation: bounce-slow 2s ease-in-out infinite; }
+    .sparkle { animation: sparkle 1.5s ease-in-out infinite; }
+    .slide-in { animation: slide-in 0.5s ease-out forwards; }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    }
+    
+    .card-gradient {
+      background: linear-gradient(145deg, #ffffff 0%, #f0f4ff 100%);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+    
+    .btn-warning {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    
+    .option-btn {
+      transition: all 0.2s ease;
+      border: 3px solid transparent;
+    }
+    
+    .option-btn:hover {
+      transform: scale(1.02);
+      border-color: #667eea;
+    }
+    
+    .option-btn.selected {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: #764ba2;
+    }
+    
+    .option-btn.correct {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      color: white;
+    }
+    
+    .option-btn.wrong {
+      background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+      color: white;
+    }
+    
+    .ornament {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    
+    .progress-bar {
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    }
+    
+    .star-icon { color: #ffd700; }
+    
+    .quiz-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+    }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 10px; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full overflow-auto gradient-bg">
+  <div id="app" class="min-h-full w-full relative overflow-hidden"><!-- Floating Ornaments -->
+   <div class="ornament top-10 left-10 text-6xl float-animation">
+    🧮
+   </div>
+   <div class="ornament top-20 right-20 text-5xl float-animation" style="animation-delay: 0.5s">
+    📐
+   </div>
+   <div class="ornament bottom-20 left-20 text-5xl float-animation" style="animation-delay: 1s">
+    📏
+   </div>
+   <div class="ornament bottom-10 right-10 text-6xl float-animation" style="animation-delay: 1.5s">
+    🔢
+   </div>
+   <div class="ornament top-1/3 left-5 text-4xl sparkle">
+    ⭐
+   </div>
+   <div class="ornament top-1/2 right-5 text-4xl sparkle" style="animation-delay: 0.7s">
+    ✨
+   </div>
+   <div class="ornament bottom-1/3 left-10 text-4xl sparkle" style="animation-delay: 1.2s">
+    🌟
+   </div><!-- Main Content -->
+   <div id="main-content" class="relative z-10 p-4 md:p-8"><!-- Header -->
+    <header class="text-center mb-8">
+     <div class="inline-block bg-white/90 rounded-3xl px-8 py-4 shadow-2xl">
+      <h1 id="main-title" class="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600">🏆 Latihan Olimpiade Orbit SD Labschool Cibubur 🏆</h1>
+      <p id="welcome-msg" class="text-gray-600 mt-2 text-lg">Ayo berlatih dan raih prestasi terbaikmu! 🚀</p>
+     </div>
+    </header><!-- Navigation Menu -->
+    <nav id="nav-menu" class="flex flex-wrap justify-center gap-3 mb-8"><button onclick="showHome()" class="btn-primary text-white px-6 py-3 rounded-full font-bold shadow-lg flex items-center gap-2"> 🏠 Beranda </button> <button onclick="showMyResults()" class="btn-success text-white px-6 py-3 rounded-full font-bold shadow-lg flex items-center gap-2"> 📊 Hasil Saya </button> <button onclick="showTeacherPreview()" class="btn-warning text-white px-6 py-3 rounded-full font-bold shadow-lg flex items-center gap-2"> 👨‍🏫 Preview Soal (Guru) </button> <button onclick="showAllResults()" class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white px-6 py-3 rounded-full font-bold shadow-lg flex items-center gap-2"> 📋 Rekap Semua Siswa </button>
+    </nav><!-- Dynamic Content Area -->
+    <div id="content-area"><!-- Home Screen -->
+     <div id="home-screen"><!-- Student Login -->
+      <div id="login-section" class="max-w-md mx-auto card-gradient rounded-3xl p-8 shadow-2xl mb-8">
+       <h2 class="text-2xl font-bold text-purple-700 mb-6 text-center">👋 Siapa Namamu?</h2><input type="text" id="student-name" placeholder="Ketik namamu di sini..." class="w-full px-6 py-4 rounded-2xl border-3 border-purple-200 focus:border-purple-500 focus:outline-none text-lg mb-4" onkeypress="if(event.key==='Enter') saveStudentName()"> <button onclick="saveStudentName()" class="w-full btn-primary text-white py-4 rounded-2xl font-bold text-lg"> ✅ Mulai Belajar! </button>
+      </div><!-- Quiz Selection (shown after login) -->
+      <div id="quiz-selection" class="hidden">
+       <div class="text-center mb-6"><span id="greeting" class="bg-white/90 px-6 py-3 rounded-full text-xl font-bold text-purple-700 shadow-lg inline-block"> Halo, Siswa! 🎉 </span>
+       </div><!-- Grade Tabs -->
+       <div class="flex justify-center gap-4 mb-8 flex-wrap"><button onclick="selectGrade(4)" id="grade-4-btn" class="px-8 py-4 rounded-2xl font-bold text-lg transition-all bg-white text-purple-600 shadow-lg hover:bg-purple-100"> 📚 Kelas 4 </button> <button onclick="selectGrade(5)" id="grade-5-btn" class="px-8 py-4 rounded-2xl font-bold text-lg transition-all bg-white text-purple-600 shadow-lg hover:bg-purple-100"> 📚 Kelas 5 </button> <button onclick="selectGrade(6)" id="grade-6-btn" class="px-8 py-4 rounded-2xl font-bold text-lg transition-all bg-white text-purple-600 shadow-lg hover:bg-purple-100"> 📚 Kelas 6 </button>
+       </div><!-- Topics Grid -->
+       <div id="topics-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"><!-- Topics will be populated here -->
+       </div>
+      </div>
+     </div><!-- Quiz Screen -->
+     <div id="quiz-screen" class="hidden max-w-3xl mx-auto">
+      <div class="quiz-card rounded-3xl p-6 md:p-8 shadow-2xl"><!-- Quiz Header -->
+       <div class="flex justify-between items-center mb-6"><button onclick="exitQuiz()" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-full font-bold text-gray-700 transition-all"> ← Kembali </button>
+        <div class="text-center"><span id="quiz-topic-title" class="text-xl font-bold text-purple-700"></span>
+         <div id="quiz-progress" class="text-sm text-gray-500"></div>
+        </div>
+        <div id="quiz-number-badge" class="bg-purple-100 px-4 py-2 rounded-full font-bold text-purple-700">
+         Quiz #1
+        </div>
+       </div><!-- Progress Bar -->
+       <div class="h-4 bg-gray-200 rounded-full mb-8 overflow-hidden">
+        <div id="progress-fill" class="h-full progress-bar rounded-full transition-all duration-500" style="width: 0%"></div>
+       </div><!-- Question -->
+       <div id="question-container" class="slide-in">
+        <div class="text-center mb-6"><span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full text-lg font-bold"> Soal <span id="question-number">1</span> dari 10 </span>
+        </div>
+        <div id="question-text" class="text-xl md:text-2xl font-bold text-gray-800 text-center mb-8 leading-relaxed"></div>
+        <div id="options-container" class="grid gap-4"></div>
+       </div><!-- Navigation Buttons -->
+       <div class="flex justify-between mt-8"><button id="prev-btn" onclick="prevQuestion()" class="bg-gray-300 hover:bg-gray-400 px-6 py-3 rounded-full font-bold text-gray-700 transition-all hidden"> ← Sebelumnya </button> <button id="next-btn" onclick="nextQuestion()" class="btn-primary text-white px-8 py-3 rounded-full font-bold ml-auto transition-all"> Selanjutnya → </button> <button id="submit-btn" onclick="submitQuiz()" class="btn-success text-white px-8 py-3 rounded-full font-bold ml-auto hidden transition-all"> ✅ Selesai! </button>
+       </div>
+      </div>
+     </div><!-- Result Screen -->
+     <div id="result-screen" class="hidden max-w-2xl mx-auto">
+      <div class="card-gradient rounded-3xl p-8 shadow-2xl text-center">
+       <div class="text-6xl mb-4" id="result-emoji">
+        🎉
+       </div>
+       <h2 class="text-3xl font-black text-purple-700 mb-4">Hasil Quiz Kamu!</h2>
+       <div id="result-score" class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-500 mb-4">
+        0/10
+       </div>
+       <div id="result-percentage" class="text-2xl font-bold text-gray-600 mb-6">
+        Akurasi: 0%
+       </div>
+       <div id="result-message" class="text-xl text-gray-700 mb-8"></div><!-- Answer Review -->
+       <div id="answer-review" class="text-left bg-white rounded-2xl p-6 mb-6 max-h-96 overflow-y-auto">
+        <h3 class="text-xl font-bold text-purple-700 mb-4">📝 Review Jawaban:</h3>
+        <div id="review-list"></div>
+       </div>
+       <div class="flex flex-wrap justify-center gap-4"><button onclick="retryQuiz()" class="btn-primary text-white px-8 py-4 rounded-full font-bold text-lg"> 🔄 Coba Lagi </button> <button onclick="showHome()" class="bg-gray-300 hover:bg-gray-400 px-8 py-4 rounded-full font-bold text-lg text-gray-700"> 🏠 Kembali ke Beranda </button>
+       </div>
+      </div>
+     </div><!-- My Results Screen -->
+     <div id="my-results-screen" class="hidden max-w-4xl mx-auto">
+      <div class="card-gradient rounded-3xl p-8 shadow-2xl">
+       <h2 class="text-2xl font-bold text-purple-700 mb-6 text-center">📊 Riwayat Hasil Quiz Saya</h2>
+       <div id="my-results-content">
+        <p class="text-center text-gray-500">Memuat data...</p>
+       </div>
+      </div>
+     </div><!-- Teacher Preview Screen -->
+     <div id="teacher-preview-screen" class="hidden max-w-4xl mx-auto">
+      <div class="card-gradient rounded-3xl p-8 shadow-2xl">
+       <h2 class="text-2xl font-bold text-purple-700 mb-6 text-center">👨‍🏫 Preview Semua Soal (Guru)</h2>
+       <div id="teacher-preview-content"><!-- Password prompt or content -->
+       </div>
+      </div>
+     </div><!-- All Results Screen -->
+     <div id="all-results-screen" class="hidden max-w-5xl mx-auto">
+      <div class="card-gradient rounded-3xl p-8 shadow-2xl">
+       <h2 class="text-2xl font-bold text-purple-700 mb-6 text-center">📋 Rekap Hasil Seluruh Siswa</h2>
+       <div id="all-results-content"><!-- Password prompt or content -->
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    // ========== CONFIGURATION ==========
+    const defaultConfig = {
+      main_title: "🏆 Latihan Olimpiade Orbit SD Labschool Cibubur 🏆",
+      welcome_message: "Ayo berlatih dan raih prestasi terbaikmu! 🚀"
+    };
+    
+    let config = { ...defaultConfig };
+    let allQuizResults = [];
+    let currentStudentName = localStorage.getItem('studentName') || '';
+    let selectedGrade = null;
+    let currentQuiz = null;
+    let currentQuestionIndex = 0;
+    let userAnswers = [];
+    let quizCounts = JSON.parse(localStorage.getItem('quizCounts') || '{}');
+    
+    // ========== QUESTIONS DATABASE ==========
+    const questionsDB = {
+      // KELAS 4
+      "kelas4_operasi_hitung": {
+        title: "Operasi Hitung",
+        grade: 4,
+        icon: "🧮",
+        questions: [
+          {
+            q: "Berapakah hasil dari 456 + 278?",
+            options: ["724", "734", "744", "754"],
+            correct: 1,
+            explanation: "Kita jumlahkan satu-satu ya! 456 + 278. Satuan: 6 + 8 = 14 (tulis 4, simpan 1). Puluhan: 5 + 7 + 1 = 13 (tulis 3, simpan 1). Ratusan: 4 + 2 + 1 = 7. Jadi hasilnya 734! 🎯"
+          },
+          {
+            q: "Hasil dari 1.234 - 567 adalah...",
+            options: ["657", "667", "677", "687"],
+            correct: 1,
+            explanation: "Kurangkan pelan-pelan dari satuan. Kalau angka di atas lebih kecil, kita pinjam dari angka sebelahnya. 1.234 - 567 = 667. Seperti menghitung mundur! ⬅️"
+          },
+          {
+            q: "Berapakah 25 × 4?",
+            options: ["90", "100", "110", "120"],
+            correct: 1,
+            explanation: "25 × 4 artinya 25 ditambah 4 kali! 25 + 25 + 25 + 25 = 100. Atau kamu bisa ingat: 25 × 4 = 100 (seperti 4 keping uang 25 rupiah = 100 rupiah!) 💰"
+          },
+          {
+            q: "Hasil dari 144 ÷ 12 adalah...",
+            options: ["10", "11", "12", "13"],
+            correct: 2,
+            explanation: "144 ÷ 12 artinya 144 dibagi menjadi 12 bagian sama besar. Berapa isi tiap bagian? Jawabannya 12! Karena 12 × 12 = 144. 🍕"
+          },
+          {
+            q: "Berapakah (15 + 25) × 3?",
+            options: ["100", "110", "120", "130"],
+            correct: 2,
+            explanation: "Ingat! Yang di dalam kurung dikerjakan duluan! 15 + 25 = 40. Lalu 40 × 3 = 120. Kurung itu seperti tamu spesial, harus dilayani duluan! 🎁"
+          },
+          {
+            q: "Hasil dari 500 - 123 - 77 adalah...",
+            options: ["290", "300", "310", "320"],
+            correct: 1,
+            explanation: "Kita kurangkan satu-satu ya! 500 - 123 = 377. Lalu 377 - 77 = 300. Jadi jawabannya 300! 🎯"
+          },
+          {
+            q: "Berapakah 18 × 5?",
+            options: ["80", "85", "90", "95"],
+            correct: 2,
+            explanation: "18 × 5 bisa dipisah: (20 × 5) - (2 × 5) = 100 - 10 = 90. Atau 18 + 18 + 18 + 18 + 18 = 90. Pakai cara yang kamu suka! 🌟"
+          },
+          {
+            q: "Hasil dari 96 ÷ 8 adalah...",
+            options: ["10", "11", "12", "13"],
+            correct: 2,
+            explanation: "96 ÷ 8 = 12. Karena 8 × 12 = 96. Kamu bisa cek dengan perkalian! ✅"
+          },
+          {
+            q: "Berapakah 1.000 - 456 + 123?",
+            options: ["657", "667", "677", "687"],
+            correct: 1,
+            explanation: "Kerjakan dari kiri ke kanan! 1.000 - 456 = 544. Lalu 544 + 123 = 667. Step by step ya! 👣"
+          },
+          {
+            q: "Hasil dari 72 ÷ 9 × 5 adalah...",
+            options: ["30", "35", "40", "45"],
+            correct: 2,
+            explanation: "Perkalian dan pembagian dikerjakan dari kiri ke kanan! 72 ÷ 9 = 8. Lalu 8 × 5 = 40. Jawabannya 40! 🎉"
+          }
+        ]
+      },
+      
+      // KELAS 5
+      "kelas5_pecahan_lanjutan": {
+        title: "Pecahan Lanjutan",
+        grade: 5,
+        icon: "🍕",
+        questions: [
+          {
+            q: "Berapakah hasil dari 1/2 + 1/3?",
+            options: ["2/5", "5/6", "3/5", "2/3"],
+            correct: 1,
+            explanation: "Untuk menjumlahkan pecahan beda penyebut, samakan penyebutnya dulu! KPK dari 2 dan 3 adalah 6. 1/2 = 3/6, dan 1/3 = 2/6. Jadi 3/6 + 2/6 = 5/6! 🍕"
+          },
+          {
+            q: "Hasil dari 3/4 - 1/6 adalah...",
+            options: ["5/12", "7/12", "1/2", "2/3"],
+            correct: 1,
+            explanation: "Samakan penyebut dulu! KPK dari 4 dan 6 adalah 12. 3/4 = 9/12, dan 1/6 = 2/12. Jadi 9/12 - 2/12 = 7/12. Eh, 5/12 ya, karena 9-2=7... mari kita hitung ulang: 9/12 - 2/12 = 7/12! Jawabannya B. 📝"
+          },
+          {
+            q: "Pecahan 3/4 sama dengan ... persen",
+            options: ["25%", "50%", "75%", "80%"],
+            correct: 2,
+            explanation: "Untuk mengubah pecahan ke persen, kalikan dengan 100%! 3/4 × 100% = 300/4 % = 75%. Jadi 3/4 sama dengan 75%! 💯"
+          },
+          {
+            q: "0,25 sama dengan pecahan...",
+            options: ["1/2", "1/3", "1/4", "1/5"],
+            correct: 2,
+            explanation: "0,25 artinya 25/100. Kalau disederhanakan: 25/100 = 1/4 (dibagi 25). Jadi 0,25 = 1/4 atau seperempat! 🎯"
+          },
+          {
+            q: "Berapakah 2/5 + 3/10?",
+            options: ["5/10", "7/10", "5/15", "1/2"],
+            correct: 1,
+            explanation: "Samakan penyebut! KPK dari 5 dan 10 adalah 10. 2/5 = 4/10. Jadi 4/10 + 3/10 = 7/10! 🌟"
+          },
+          {
+            q: "50% sama dengan pecahan...",
+            options: ["1/4", "1/3", "1/2", "2/3"],
+            correct: 2,
+            explanation: "50% artinya 50/100. Kalau disederhanakan: 50/100 = 1/2 (dibagi 50). Jadi 50% = setengah! 🍰"
+          },
+          {
+            q: "Hasil dari 5/6 - 1/2 adalah...",
+            options: ["1/3", "2/6", "4/6", "1/6"],
+            correct: 0,
+            explanation: "Samakan penyebut! KPK dari 6 dan 2 adalah 6. 1/2 = 3/6. Jadi 5/6 - 3/6 = 2/6 = 1/3! ✨"
+          },
+          {
+            q: "0,8 sama dengan ... persen",
+            options: ["8%", "18%", "80%", "800%"],
+            correct: 2,
+            explanation: "Untuk mengubah desimal ke persen, kalikan 100! 0,8 × 100 = 80. Jadi 0,8 = 80%! 📊"
+          },
+          {
+            q: "Berapakah 1/4 + 2/3?",
+            options: ["3/7", "11/12", "3/12", "5/7"],
+            correct: 1,
+            explanation: "Samakan penyebut! KPK dari 4 dan 3 adalah 12. 1/4 = 3/12, dan 2/3 = 8/12. Jadi 3/12 + 8/12 = 11/12! 🎉"
+          },
+          {
+            q: "20% sama dengan desimal...",
+            options: ["0,02", "0,2", "2,0", "0,002"],
+            correct: 1,
+            explanation: "Untuk mengubah persen ke desimal, bagi 100! 20 ÷ 100 = 0,2. Jadi 20% = 0,2! 🔢"
+          }
+        ]
+      },
+      
+      // KELAS 6
+      "kelas6_skala_perbandingan": {
+        title: "Skala & Perbandingan",
+        grade: 6,
+        icon: "⚖️",
+        questions: [
+          {
+            q: "Perbandingan umur Ani dan Budi adalah 2 : 3. Jika umur Ani 8 tahun, berapa umur Budi?",
+            options: ["10 tahun", "12 tahun", "14 tahun", "16 tahun"],
+            correct: 1,
+            explanation: "Perbandingan 2 : 3, Ani = 2 bagian = 8 tahun. Berarti 1 bagian = 4 tahun. Budi = 3 bagian = 3 × 4 = 12 tahun! 🎂"
+          },
+          {
+            q: "Skala peta 1 : 100.000 artinya 1 cm di peta sama dengan ... km di kenyataan",
+            options: ["1 km", "10 km", "100 km", "1000 km"],
+            correct: 0,
+            explanation: "1 : 100.000 artinya 1 cm di peta = 100.000 cm di kenyataan. 100.000 cm = 1.000 m = 1 km! Jadi 1 cm = 1 km! 🗺️"
+          },
+          {
+            q: "Uang Rini dan Sari perbandingannya 3 : 5. Jika total uang mereka Rp 80.000, berapa uang Rini?",
+            options: ["Rp 20.000", "Rp 30.000", "Rp 40.000", "Rp 50.000"],
+            correct: 1,
+            explanation: "Total bagian = 3 + 5 = 8 bagian. 1 bagian = 80.000 ÷ 8 = 10.000. Rini = 3 bagian = 3 × 10.000 = Rp 30.000! 💵"
+          },
+          {
+            q: "Jika 4 pensil harganya Rp 8.000, berapa harga 7 pensil?",
+            options: ["Rp 12.000", "Rp 14.000", "Rp 16.000", "Rp 18.000"],
+            correct: 1,
+            explanation: "1 pensil = 8.000 ÷ 4 = 2.000. Jadi 7 pensil = 7 × 2.000 = Rp 14.000! ✏️"
+          },
+          {
+            q: "Perbandingan panjang dan lebar persegi panjang adalah 4 : 3. Jika panjangnya 20 cm, berapa lebarnya?",
+            options: ["12 cm", "15 cm", "16 cm", "18 cm"],
+            correct: 1,
+            explanation: "Perbandingan 4 : 3. Panjang = 4 bagian = 20 cm. 1 bagian = 5 cm. Lebar = 3 bagian = 15 cm! 📏"
+          },
+          {
+            q: "Di peta skala 1 : 50.000, jarak 2 kota adalah 4 cm. Berapa jarak sebenarnya?",
+            options: ["1 km", "2 km", "4 km", "8 km"],
+            correct: 1,
+            explanation: "4 cm × 50.000 = 200.000 cm = 2.000 m = 2 km! 🚗"
+          },
+          {
+            q: "Perbandingan banyak kelereng merah dan biru adalah 2 : 5. Jika kelereng biru ada 25, berapa kelereng merah?",
+            options: ["8", "10", "12", "15"],
+            correct: 1,
+            explanation: "Biru = 5 bagian = 25. Jadi 1 bagian = 5. Merah = 2 bagian = 2 × 5 = 10! 🔴🔵"
+          },
+          {
+            q: "Resep kue membutuhkan gula dan tepung dengan perbandingan 1 : 4. Jika tepung 200 gram, berapa gram gula?",
+            options: ["40 gram", "50 gram", "60 gram", "80 gram"],
+            correct: 1,
+            explanation: "Tepung = 4 bagian = 200 gram. 1 bagian = 50 gram. Gula = 1 bagian = 50 gram! 🍰"
+          },
+          {
+            q: "Jarak Jakarta-Bandung di peta skala 1 : 1.000.000 adalah 12 cm. Berapa km jarak sebenarnya?",
+            options: ["12 km", "120 km", "1.200 km", "12.000 km"],
+            correct: 1,
+            explanation: "12 cm × 1.000.000 = 12.000.000 cm = 120.000 m = 120 km! 🚆"
+          },
+          {
+            q: "Perbandingan siswa laki-laki dan perempuan di kelas adalah 3 : 4. Jika ada 12 siswa laki-laki, berapa total siswa?",
+            options: ["24", "26", "28", "30"],
+            correct: 2,
+            explanation: "Laki-laki = 3 bagian = 12. 1 bagian = 4. Perempuan = 4 bagian = 16. Total = 12 + 16 = 28 siswa! 👦👧"
+          }
+        ]
+      },
+      
+      "kelas6_pola_bilangan": {
+        title: "Pola Bilangan",
+        grade: 6,
+        icon: "🔢",
+        questions: [
+          {
+            q: "1, 4, 7, 10, ... Bilangan selanjutnya adalah...",
+            options: ["12", "13", "14", "15"],
+            correct: 1,
+            explanation: "Polanya: +3 setiap bilangan! 1+3=4, 4+3=7, 7+3=10, 10+3=13. Jawabannya 13! 🎯"
+          },
+          {
+            q: "2, 6, 18, 54, ... Bilangan selanjutnya adalah...",
+            options: ["108", "162", "216", "270"],
+            correct: 1,
+            explanation: "Polanya: ×3 setiap bilangan! 2×3=6, 6×3=18, 18×3=54, 54×3=162. Jawabannya 162! ✨"
+          },
+          {
+            q: "100, 90, 81, 73, ... Bilangan selanjutnya adalah...",
+            options: ["64", "65", "66", "67"],
+            correct: 2,
+            explanation: "Polanya: -10, -9, -8, -7... Jadi 73-7=66. Jawabannya 66! 📉"
+          },
+          {
+            q: "1, 1, 2, 3, 5, 8, ... Bilangan selanjutnya adalah...",
+            options: ["10", "11", "12", "13"],
+            correct: 3,
+            explanation: "Ini pola Fibonacci! Setiap bilangan adalah jumlah 2 bilangan sebelumnya. 5+8=13. Jawabannya 13! 🐚"
+          },
+          {
+            q: "3, 6, 12, 24, ... Bilangan selanjutnya adalah...",
+            options: ["36", "42", "48", "54"],
+            correct: 2,
+            explanation: "Polanya: ×2 setiap bilangan! 3×2=6, 6×2=12, 12×2=24, 24×2=48. Jawabannya 48! 🔄"
+          },
+          {
+            q: "1, 4, 9, 16, 25, ... Bilangan selanjutnya adalah...",
+            options: ["30", "34", "36", "40"],
+            correct: 2,
+            explanation: "Ini pola bilangan kuadrat! 1², 2², 3², 4², 5², 6²=36. Jawabannya 36! ⬜"
+          },
+          {
+            q: "5, 10, 20, 40, ... Bilangan selanjutnya adalah...",
+            options: ["60", "70", "80", "90"],
+            correct: 2,
+            explanation: "Polanya: ×2 setiap bilangan! 5×2=10, 10×2=20, 20×2=40, 40×2=80. Jawabannya 80! 💫"
+          },
+          {
+            q: "2, 5, 10, 17, 26, ... Bilangan selanjutnya adalah...",
+            options: ["35", "36", "37", "38"],
+            correct: 2,
+            explanation: "Polanya: +3, +5, +7, +9, +11... Jadi 26+11=37. Jawabannya 37! 🎓"
+          },
+          {
+            q: "1, 2, 4, 7, 11, ... Bilangan selanjutnya adalah...",
+            options: ["14", "15", "16", "17"],
+            correct: 2,
+            explanation: "Polanya: +1, +2, +3, +4, +5... Jadi 11+5=16. Jawabannya 16! 📈"
+          },
+          {
+            q: "64, 32, 16, 8, ... Bilangan selanjutnya adalah...",
+            options: ["2", "4", "6", "0"],
+            correct: 1,
+            explanation: "Polanya: ÷2 setiap bilangan! 64÷2=32, 32÷2=16, 16÷2=8, 8÷2=4. Jawabannya 4! ➗"
+          }
+        ]
+      },
+      
+      "kelas6_persamaan_sederhana": {
+        title: "Persamaan Sederhana",
+        grade: 6,
+        icon: "🔤",
+        questions: [
+          {
+            q: "Jika x + 5 = 12, maka nilai x adalah...",
+            options: ["5", "6", "7", "8"],
+            correct: 2,
+            explanation: "x + 5 = 12, maka x = 12 - 5 = 7. Kita pindahkan 5 ke sebelah kanan dengan tanda kebalikannya! 🎯"
+          },
+          {
+            q: "Jika 3y = 15, maka nilai y adalah...",
+            options: ["3", "4", "5", "6"],
+            correct: 2,
+            explanation: "3y = 15, maka y = 15 ÷ 3 = 5. Kita bagi kedua sisi dengan 3! ➗"
+          },
+          {
+            q: "Jika n - 8 = 20, maka nilai n adalah...",
+            options: ["12", "18", "28", "32"],
+            correct: 2,
+            explanation: "n - 8 = 20, maka n = 20 + 8 = 28. Pindahkan -8 jadi +8! ➕"
+          },
+          {
+            q: "Jika 2a + 3 = 11, maka nilai a adalah...",
+            options: ["3", "4", "5", "6"],
+            correct: 1,
+            explanation: "2a + 3 = 11. Pertama: 2a = 11 - 3 = 8. Kedua: a = 8 ÷ 2 = 4! 🔢"
+          },
+          {
+            q: "Jika p ÷ 4 = 6, maka nilai p adalah...",
+            options: ["18", "20", "24", "28"],
+            correct: 2,
+            explanation: "p ÷ 4 = 6, maka p = 6 × 4 = 24. Kebalikan dari bagi adalah kali! ✖️"
+          },
+          {
+            q: "Jika 5m - 10 = 25, maka nilai m adalah...",
+            options: ["5", "6", "7", "8"],
+            correct: 2,
+            explanation: "5m - 10 = 25. Pertama: 5m = 25 + 10 = 35. Kedua: m = 35 ÷ 5 = 7! 🎓"
+          },
+          {
+            q: "Jika x + x + x = 18, maka nilai x adalah...",
+            options: ["4", "5", "6", "7"],
+            correct: 2,
+            explanation: "x + x + x = 3x = 18. Jadi x = 18 ÷ 3 = 6! 💡"
+          },
+          {
+            q: "Jika 4b = 32, maka nilai b + 5 adalah...",
+            options: ["10", "12", "13", "15"],
+            correct: 2,
+            explanation: "4b = 32, maka b = 8. Jadi b + 5 = 8 + 5 = 13! ➕"
+          },
+          {
+            q: "Jika k - 15 = 45, maka nilai k ÷ 2 adalah...",
+            options: ["25", "28", "30", "35"],
+            correct: 2,
+            explanation: "k - 15 = 45, maka k = 60. Jadi k ÷ 2 = 60 ÷ 2 = 30! ➗"
+          },
+          {
+            q: "Jika 2n + 2n = 20, maka nilai n adalah...",
+            options: ["4", "5", "6", "10"],
+            correct: 1,
+            explanation: "2n + 2n = 4n = 20. Jadi n = 20 ÷ 4 = 5! ✨"
+          }
+        ]
+      },
+      
+      "kelas6_hubungan_variabel": {
+        title: "Hubungan Variabel",
+        grade: 6,
+        icon: "🔗",
+        questions: [
+          {
+            q: "Jika y = 2x, dan x = 5, maka y = ...",
+            options: ["7", "8", "10", "12"],
+            correct: 2,
+            explanation: "y = 2x = 2 × 5 = 10. Tinggal ganti x dengan 5, lalu kalikan! ✖️"
+          },
+          {
+            q: "Jika luas = panjang × lebar, dan panjang = 8, lebar = 5, maka luas = ...",
+            options: ["13", "30", "40", "45"],
+            correct: 2,
+            explanation: "Luas = 8 × 5 = 40 satuan luas. Rumus persegi panjang! 📐"
+          },
+          {
+            q: "Jika a = b + 3, dan b = 7, maka a = ...",
+            options: ["4", "7", "10", "21"],
+            correct: 2,
+            explanation: "a = b + 3 = 7 + 3 = 10. Ganti b dengan 7! 🔢"
+          },
+          {
+            q: "Jika total = harga × jumlah, harga = 2000, jumlah = 4, maka total = ...",
+            options: ["6.000", "8.000", "10.000", "12.000"],
+            correct: 1,
+            explanation: "Total = 2000 × 4 = 8000. Seperti belanja di warung! 🛒"
+          },
+          {
+            q: "Jika p = 3q - 2, dan q = 4, maka p = ...",
+            options: ["8", "10", "12", "14"],
+            correct: 1,
+            explanation: "p = 3×4 - 2 = 12 - 2 = 10. Hitung perkalian dulu, baru kurangi! 🎯"
+          },
+          {
+            q: "Jika keliling persegi = 4 × sisi, dan sisi = 9 cm, maka keliling = ...",
+            options: ["27 cm", "36 cm", "45 cm", "54 cm"],
+            correct: 1,
+            explanation: "Keliling = 4 × 9 = 36 cm. Karena persegi punya 4 sisi sama! ⬜"
+          },
+          {
+            q: "Jika m = n ÷ 2, dan n = 24, maka m = ...",
+            options: ["10", "11", "12", "14"],
+            correct: 2,
+            explanation: "m = 24 ÷ 2 = 12. Setengah dari n! ➗"
+          },
+          {
+            q: "Jika x = 2y + 1, dan y = 6, maka x = ...",
+            options: ["11", "12", "13", "14"],
+            correct: 2,
+            explanation: "x = 2×6 + 1 = 12 + 1 = 13. Kalikan dulu, baru tambah! ➕"
+          },
+          {
+            q: "Jika jarak = kecepatan × waktu, kecepatan = 60 km/jam, waktu = 2 jam, maka jarak = ...",
+            options: ["30 km", "100 km", "120 km", "180 km"],
+            correct: 2,
+            explanation: "Jarak = 60 × 2 = 120 km. Rumus perjalanan! 🚗"
+          },
+          {
+            q: "Jika c = a + b, a = 15, dan b = a + 5, maka c = ...",
+            options: ["30", "35", "40", "45"],
+            correct: 1,
+            explanation: "Pertama: b = 15 + 5 = 20. Kedua: c = 15 + 20 = 35! 🎓"
+          }
+        ]
+      },
+      
+      "kelas6_volume_prisma_limas": {
+        title: "Volume Prisma & Limas",
+        grade: 6,
+        icon: "📦",
+        questions: [
+          {
+            q: "Volume balok dengan panjang 5 cm, lebar 4 cm, dan tinggi 3 cm adalah...",
+            options: ["40 cm³", "50 cm³", "60 cm³", "70 cm³"],
+            correct: 2,
+            explanation: "Volume balok = p × l × t = 5 × 4 × 3 = 60 cm³. Seperti mengisi balok dengan kubus kecil! 📦"
+          },
+          {
+            q: "Volume kubus dengan sisi 4 cm adalah...",
+            options: ["16 cm³", "32 cm³", "64 cm³", "128 cm³"],
+            correct: 2,
+            explanation: "Volume kubus = s × s × s = 4 × 4 × 4 = 64 cm³. Sisi dikali 3 kali! 🎲"
+          },
+          {
+            q: "Volume prisma segitiga dengan alas segitiga (alas 6 cm, tinggi segitiga 4 cm) dan tinggi prisma 10 cm adalah...",
+            options: ["100 cm³", "120 cm³", "140 cm³", "160 cm³"],
+            correct: 1,
+            explanation: "Luas alas = ½ × 6 × 4 = 12 cm². Volume = 12 × 10 = 120 cm³! 🔺"
+          },
+          {
+            q: "Volume limas dengan alas persegi (sisi 6 cm) dan tinggi limas 5 cm adalah...",
+            options: ["40 cm³", "50 cm³", "60 cm³", "70 cm³"],
+            correct: 2,
+            explanation: "Luas alas = 6 × 6 = 36 cm². Volume limas = ⅓ × 36 × 5 = 60 cm³! 🔻"
+          },
+          {
+            q: "Volume balok dengan ukuran 8 cm × 6 cm × 5 cm adalah...",
+            options: ["200 cm³", "220 cm³", "240 cm³", "260 cm³"],
+            correct: 2,
+            explanation: "Volume = 8 × 6 × 5 = 240 cm³. Panjang × lebar × tinggi! 📐"
+          },
+          {
+            q: "Sebuah kubus memiliki volume 125 cm³. Panjang sisinya adalah...",
+            options: ["4 cm", "5 cm", "6 cm", "7 cm"],
+            correct: 1,
+            explanation: "125 = s³, maka s = ∛125 = 5 cm. Karena 5 × 5 × 5 = 125! 🎯"
+          },
+          {
+            q: "Volume limas segitiga dengan luas alas 24 cm² dan tinggi 9 cm adalah...",
+            options: ["54 cm³", "64 cm³", "72 cm³", "84 cm³"],
+            correct: 2,
+            explanation: "Volume limas = ⅓ × luas alas × tinggi = ⅓ × 24 × 9 = 72 cm³! 🔺"
+          },
+          {
+            q: "Balok dengan volume 180 cm³, panjang 9 cm, dan lebar 5 cm memiliki tinggi...",
+            options: ["3 cm", "4 cm", "5 cm", "6 cm"],
+            correct: 1,
+            explanation: "180 = 9 × 5 × t, maka 180 = 45t, t = 180 ÷ 45 = 4 cm! 📏"
+          },
+          {
+            q: "Volume prisma dengan alas trapesium (sisi sejajar 5 cm dan 7 cm, tinggi trapesium 4 cm) dan tinggi prisma 6 cm adalah...",
+            options: ["124 cm³", "134 cm³", "144 cm³", "154 cm³"],
+            correct: 2,
+            explanation: "Luas trapesium = ½ × (5+7) × 4 = 24 cm². Volume = 24 × 6 = 144 cm³! 🏠"
+          },
+          {
+            q: "Volume limas dengan alas persegi panjang (8 cm × 6 cm) dan tinggi 10 cm adalah...",
+            options: ["140 cm³", "150 cm³", "160 cm³", "170 cm³"],
+            correct: 2,
+            explanation: "Luas alas = 8 × 6 = 48 cm². Volume = ⅓ × 48 × 10 = 160 cm³! 📦"
+          }
+        ]
+      },
+      
+      "kelas6_luas_permukaan": {
+        title: "Luas Permukaan",
+        grade: 6,
+        icon: "📋",
+        questions: [
+          {
+            q: "Luas permukaan kubus dengan sisi 5 cm adalah...",
+            options: ["100 cm²", "125 cm²", "150 cm²", "175 cm²"],
+            correct: 2,
+            explanation: "Kubus punya 6 sisi sama besar. Luas 1 sisi = 5 × 5 = 25 cm². Luas permukaan = 6 × 25 = 150 cm²! 🎲"
+          },
+          {
+            q: "Luas permukaan balok dengan ukuran 4 cm × 3 cm × 2 cm adalah...",
+            options: ["42 cm²", "48 cm²", "52 cm²", "58 cm²"],
+            correct: 2,
+            explanation: "LP = 2(pl + pt + lt) = 2(12 + 8 + 6) = 2 × 26 = 52 cm²! 📦"
+          },
+          {
+            q: "Sebuah kubus memiliki luas permukaan 96 cm². Panjang sisinya adalah...",
+            options: ["3 cm", "4 cm", "5 cm", "6 cm"],
+            correct: 1,
+            explanation: "96 = 6s², maka s² = 16, s = 4 cm! Karena 4 × 4 × 6 = 96! 🎯"
+          },
+          {
+            q: "Luas permukaan balok dengan panjang 6 cm, lebar 4 cm, dan tinggi 3 cm adalah...",
+            options: ["98 cm²", "104 cm²", "108 cm²", "112 cm²"],
+            correct: 2,
+            explanation: "LP = 2(6×4 + 6×3 + 4×3) = 2(24 + 18 + 12) = 2 × 54 = 108 cm²! 📐"
+          },
+          {
+            q: "Luas permukaan kubus dengan sisi 7 cm adalah...",
+            options: ["245 cm²", "280 cm²", "294 cm²", "343 cm²"],
+            correct: 2,
+            explanation: "LP = 6 × s² = 6 × 49 = 294 cm²! 🎲"
+          },
+          {
+            q: "Balok dengan luas permukaan 94 cm², panjang 5 cm, lebar 4 cm. Berapa tingginya?",
+            options: ["2 cm", "3 cm", "4 cm", "5 cm"],
+            correct: 1,
+            explanation: "94 = 2(20 + 5t + 4t) = 2(20 + 9t). 47 = 20 + 9t. 27 = 9t. t = 3 cm! 📏"
+          },
+          {
+            q: "Luas permukaan balok dengan ukuran 10 cm × 8 cm × 5 cm adalah...",
+            options: ["320 cm²", "340 cm²", "360 cm²", "380 cm²"],
+            correct: 1,
+            explanation: "LP = 2(80 + 50 + 40) = 2 × 170 = 340 cm²! 📦"
+          },
+          {
+            q: "Sebuah kubus memiliki luas permukaan 216 cm². Volume kubus tersebut adalah...",
+            options: ["125 cm³", "216 cm³", "343 cm³", "512 cm³"],
+            correct: 1,
+            explanation: "216 = 6s², s² = 36, s = 6 cm. Volume = 6³ = 216 cm³! 🎯"
+          },
+          {
+            q: "Luas permukaan kubus dengan sisi 8 cm adalah...",
+            options: ["256 cm²", "324 cm²", "384 cm²", "512 cm²"],
+            correct: 2,
+            explanation: "LP = 6 × 8² = 6 × 64 = 384 cm²! 🎲"
+          },
+          {
+            q: "Balok dengan panjang 12 cm, lebar 5 cm, dan tinggi 4 cm memiliki luas permukaan...",
+            options: ["246 cm²", "256 cm²", "266 cm²", "276 cm²"],
+            correct: 1,
+            explanation: "LP = 2(60 + 48 + 20) = 2 × 128 = 256 cm²! 📐"
+          }
+        ]
+      },
+      
+      "kelas6_kecepatan": {
+        title: "Kecepatan, Jarak & Waktu",
+        grade: 6,
+        icon: "🚗",
+        questions: [
+          {
+            q: "Sebuah mobil menempuh jarak 150 km dalam waktu 3 jam. Berapa kecepatan mobil?",
+            options: ["40 km/jam", "45 km/jam", "50 km/jam", "55 km/jam"],
+            correct: 2,
+            explanation: "Kecepatan = Jarak ÷ Waktu = 150 ÷ 3 = 50 km/jam. Seperti menghitung berapa km per jam! 🚗"
+          },
+          {
+            q: "Sepeda melaju dengan kecepatan 20 km/jam selama 4 jam. Berapa jarak yang ditempuh?",
+            options: ["60 km", "70 km", "80 km", "90 km"],
+            correct: 2,
+            explanation: "Jarak = Kecepatan × Waktu = 20 × 4 = 80 km. Kecepatan dikali waktu! 🚴"
+          },
+          {
+            q: "Bus menempuh jarak 180 km dengan kecepatan 60 km/jam. Berapa lama waktu perjalanan?",
+            options: ["2 jam", "3 jam", "4 jam", "5 jam"],
+            correct: 1,
+            explanation: "Waktu = Jarak ÷ Kecepatan = 180 ÷ 60 = 3 jam. Jarak dibagi kecepatan! ⏱️"
+          },
+          {
+            q: "Ani berlari dengan kecepatan 8 m/detik. Berapa meter yang ditempuh dalam 15 detik?",
+            options: ["100 m", "110 m", "120 m", "130 m"],
+            correct: 2,
+            explanation: "Jarak = 8 × 15 = 120 meter. Cepat sekali Ani! 🏃‍♀️"
+          },
+          {
+            q: "Kereta menempuh 240 km dalam 2 jam. Berapa km ditempuh dalam 5 jam dengan kecepatan sama?",
+            options: ["500 km", "550 km", "600 km", "650 km"],
+            correct: 2,
+            explanation: "Kecepatan = 240 ÷ 2 = 120 km/jam. Jarak 5 jam = 120 × 5 = 600 km! 🚆"
+          },
+          {
+            q: "Pesawat terbang dengan kecepatan 800 km/jam. Berapa menit untuk menempuh 200 km?",
+            options: ["10 menit", "15 menit", "20 menit", "25 menit"],
+            correct: 1,
+            explanation: "Waktu = 200 ÷ 800 = 0,25 jam = 15 menit. (0,25 × 60 = 15) ✈️"
+          },
+          {
+            q: "Budi berjalan 3 km dalam 30 menit. Berapa kecepatan Budi dalam km/jam?",
+            options: ["4 km/jam", "5 km/jam", "6 km/jam", "7 km/jam"],
+            correct: 2,
+            explanation: "30 menit = 0,5 jam. Kecepatan = 3 ÷ 0,5 = 6 km/jam! 🚶"
+          },
+          {
+            q: "Motor melaju 90 km/jam. Berapa detik untuk menempuh 50 meter?",
+            options: ["1 detik", "2 detik", "3 detik", "4 detik"],
+            correct: 1,
+            explanation: "90 km/jam = 25 m/detik. Waktu = 50 ÷ 25 = 2 detik! 🏍️"
+          },
+          {
+            q: "Pelari menempuh 400 m dalam 50 detik. Berapa m/detik kecepatannya?",
+            options: ["6 m/detik", "7 m/detik", "8 m/detik", "9 m/detik"],
+            correct: 2,
+            explanation: "Kecepatan = 400 ÷ 50 = 8 m/detik. Pelari cepat! 🏃"
+          },
+          {
+            q: "Dua kota berjarak 420 km. Mobil berangkat jam 8 pagi dengan kecepatan 70 km/jam. Jam berapa sampai?",
+            options: ["Jam 2 siang", "Jam 3 siang", "Jam 4 siang", "Jam 5 siang"],
+            correct: 0,
+            explanation: "Waktu = 420 ÷ 70 = 6 jam. Jam 8 + 6 jam = Jam 2 siang! ⏰"
+          }
+        ]
+      },
+      
+      "kelas6_skala_peta": {
+        title: "Skala Peta",
+        grade: 6,
+        icon: "🗺️",
+        questions: [
+          {
+            q: "Skala peta 1 : 200.000. Jarak di peta 3 cm. Berapa km jarak sebenarnya?",
+            options: ["4 km", "5 km", "6 km", "7 km"],
+            correct: 2,
+            explanation: "3 cm × 200.000 = 600.000 cm = 6 km. (600.000 ÷ 100.000) 🗺️"
+          },
+          {
+            q: "Jarak sebenarnya 15 km. Skala 1 : 500.000. Berapa cm di peta?",
+            options: ["2 cm", "3 cm", "4 cm", "5 cm"],
+            correct: 1,
+            explanation: "15 km = 1.500.000 cm. Di peta = 1.500.000 ÷ 500.000 = 3 cm! 📏"
+          },
+          {
+            q: "Di peta skala 1 : 100.000, jarak 2 kota 8 cm. Berapa jarak sebenarnya?",
+            options: ["6 km", "7 km", "8 km", "9 km"],
+            correct: 2,
+            explanation: "8 cm × 100.000 = 800.000 cm = 8 km! 🛣️"
+          },
+          {
+            q: "Jarak sebenarnya 24 km, di peta 4 cm. Berapa skala petanya?",
+            options: ["1 : 400.000", "1 : 500.000", "1 : 600.000", "1 : 700.000"],
+            correct: 2,
+            explanation: "24 km = 2.400.000 cm. Skala = 4 : 2.400.000 = 1 : 600.000! 🧮"
+          },
+          {
+            q: "Skala 1 : 250.000. Jarak sebenarnya 10 km sama dengan berapa cm di peta?",
+            options: ["2 cm", "3 cm", "4 cm", "5 cm"],
+            correct: 2,
+            explanation: "10 km = 1.000.000 cm. Di peta = 1.000.000 ÷ 250.000 = 4 cm! 📐"
+          },
+          {
+            q: "Di peta skala 1 : 50.000, jarak 5 cm sama dengan...",
+            options: ["1,5 km", "2 km", "2,5 km", "3 km"],
+            correct: 2,
+            explanation: "5 cm × 50.000 = 250.000 cm = 2,5 km! (250.000 ÷ 100.000) 🗺️"
+          },
+          {
+            q: "Luas tanah di peta 4 cm², skala 1 : 10.000. Berapa m² luas sebenarnya?",
+            options: ["40.000 m²", "400.000 m²", "4.000.000 m²", "40.000.000 m²"],
+            correct: 1,
+            explanation: "Untuk luas, skala dikuadratkan! 4 × (10.000)² = 4 × 100.000.000 cm² = 400.000 m²! 🏞️"
+          },
+          {
+            q: "Jarak sebenarnya 45 km, skala 1 : 1.500.000. Berapa cm di peta?",
+            options: ["2 cm", "3 cm", "4 cm", "5 cm"],
+            correct: 1,
+            explanation: "45 km = 4.500.000 cm. Di peta = 4.500.000 ÷ 1.500.000 = 3 cm! 📏"
+          },
+          {
+            q: "Skala peta 1 : 400.000. Jarak di peta 7 cm sama dengan...",
+            options: ["26 km", "27 km", "28 km", "29 km"],
+            correct: 2,
+            explanation: "7 × 400.000 = 2.800.000 cm = 28 km! 🚗"
+          },
+          {
+            q: "Sawah berbentuk persegi di peta berukuran 2 cm × 2 cm dengan skala 1 : 5.000. Berapa m² luas sawah sebenarnya?",
+            options: ["8.000 m²", "9.000 m²", "10.000 m²", "11.000 m²"],
+            correct: 2,
+            explanation: "Sisi sebenarnya = 2 × 5.000 = 10.000 cm = 100 m. Luas = 100 × 100 = 10.000 m²! 🌾"
+          }
+        ]
+      }
+    };
+    
+    // ========== INITIALIZATION ==========
+    async function initApp() {
+      // Initialize Element SDK
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (cfg) => {
+            config = cfg;
+            updateUI();
+          },
+          mapToCapabilities: (cfg) => ({
+            recolorables: [],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (cfg) => new Map([
+            ["main_title", cfg.main_title || defaultConfig.main_title],
+            ["welcome_message", cfg.welcome_message || defaultConfig.welcome_message]
+          ])
+        });
+      }
+      
+      // Initialize Data SDK
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init({
+          onDataChanged: (data) => {
+            allQuizResults = data || [];
+            updateResultsDisplay();
+          }
+        });
+        if (!result.isOk) {
+          console.error("Failed to initialize data SDK");
+        }
+      }
+      
+      // Check for saved student name
+      if (currentStudentName) {
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('quiz-selection').classList.remove('hidden');
+        document.getElementById('greeting').innerHTML = `Halo, ${currentStudentName}! 🎉`;
+        selectGrade(4);
+      }
+      
+      updateUI();
+    }
+    
+    function updateUI() {
+      document.getElementById('main-title').innerHTML = config.main_title || defaultConfig.main_title;
+      document.getElementById('welcome-msg').textContent = config.welcome_message || defaultConfig.welcome_message;
+    }
+    
+    function updateResultsDisplay() {
+      // Update if currently viewing results
+      const myResultsScreen = document.getElementById('my-results-screen');
+      if (!myResultsScreen.classList.contains('hidden')) {
+        displayMyResults();
+      }
+      
+      const allResultsScreen = document.getElementById('all-results-screen');
+      if (!allResultsScreen.classList.contains('hidden') && document.getElementById('all-results-table')) {
+        displayAllResults();
+      }
+    }
+    
+    // ========== NAVIGATION ==========
+    function hideAllScreens() {
+      ['home-screen', 'quiz-screen', 'result-screen', 'my-results-screen', 'teacher-preview-screen', 'all-results-screen']
+        .forEach(id => document.getElementById(id).classList.add('hidden'));
+    }
+    
+    function showHome() {
+      hideAllScreens();
+      document.getElementById('home-screen').classList.remove('hidden');
+    }
+    
+    function showMyResults() {
+      hideAllScreens();
+      document.getElementById('my-results-screen').classList.remove('hidden');
+      displayMyResults();
+    }
+    
+    function displayMyResults() {
+      const content = document.getElementById('my-results-content');
+      
+      if (!currentStudentName) {
+        content.innerHTML = `
+          <div class="text-center py-8">
+            <div class="text-6xl mb-4">🔐</div>
+            <p class="text-gray-600 text-lg">Masukkan namamu dulu di beranda untuk melihat hasil quiz! 😊</p>
+            <button onclick="showHome()" class="btn-primary text-white px-6 py-3 rounded-full font-bold mt-4">
+              🏠 Ke Beranda
+            </button>
+          </div>
+        `;
+        return;
+      }
+      
+      const myResults = allQuizResults.filter(r => r.student_name === currentStudentName);
+      
+      if (myResults.length === 0) {
+        content.innerHTML = `
+          <div class="text-center py-8">
+            <div class="text-6xl mb-4">📝</div>
+            <p class="text-gray-600 text-lg">Kamu belum mengerjakan quiz. Ayo mulai belajar! 🚀</p>
+            <button onclick="showHome()" class="btn-primary text-white px-6 py-3 rounded-full font-bold mt-4">
+              🏠 Mulai Quiz
+            </button>
+          </div>
+        `;
+        return;
+      }
+      
+      // Calculate statistics
+      const totalQuizzes = myResults.length;
+      const totalCorrect = myResults.reduce((sum, r) => sum + r.correct_answers, 0);
+      const totalQuestions = myResults.reduce((sum, r) => sum + r.total_questions, 0);
+      const avgAccuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+      
+      // Group by topic for accuracy per topic
+      const topicStats = {};
+      myResults.forEach(r => {
+        if (!topicStats[r.topic]) {
+          topicStats[r.topic] = { correct: 0, total: 0, attempts: 0 };
+        }
+        topicStats[r.topic].correct += r.correct_answers;
+        topicStats[r.topic].total += r.total_questions;
+        topicStats[r.topic].attempts += 1;
+      });
+      
+      content.innerHTML = `
+        <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-6 mb-6">
+          <h3 class="text-xl font-bold text-purple-700 mb-4">📊 Statistik ${currentStudentName}</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white rounded-xl p-4 text-center shadow">
+              <div class="text-3xl font-bold text-purple-600">${totalQuizzes}</div>
+              <div class="text-sm text-gray-600">Total Quiz</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 text-center shadow">
+              <div class="text-3xl font-bold text-green-600">${totalCorrect}</div>
+              <div class="text-sm text-gray-600">Jawaban Benar</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 text-center shadow">
+              <div class="text-3xl font-bold text-blue-600">${totalQuestions}</div>
+              <div class="text-sm text-gray-600">Total Soal</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 text-center shadow">
+              <div class="text-3xl font-bold text-orange-600">${avgAccuracy}%</div>
+              <div class="text-sm text-gray-600">Akurasi Rata-rata</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-2xl p-4 mb-6">
+          <h4 class="font-bold text-purple-700 mb-3">📈 Akurasi per Materi:</h4>
+          <div class="space-y-2">
+            ${Object.entries(topicStats).map(([topic, stats]) => {
+              const accuracy = Math.round((stats.correct / stats.total) * 100);
+              return `
+                <div class="flex items-center gap-2">
+                  <span class="text-sm w-40 truncate">${topic}</span>
+                  <div class="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="h-full progress-bar" style="width: ${accuracy}%"></div>
+                  </div>
+                  <span class="text-sm font-bold w-16">${accuracy}% (${stats.attempts}x)</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+        
+        <h4 class="font-bold text-purple-700 mb-3">📋 Riwayat Quiz:</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-purple-100">
+              <tr>
+                <th class="p-3 text-left rounded-tl-xl">Quiz #</th>
+                <th class="p-3 text-left">Kelas</th>
+                <th class="p-3 text-left">Materi</th>
+                <th class="p-3 text-center">Skor</th>
+                <th class="p-3 text-center">Akurasi</th>
+                <th class="p-3 text-left rounded-tr-xl">Waktu</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${myResults.sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at)).map((r, i) => `
+                <tr class="${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}">
+                  <td class="p-3 font-bold text-purple-600">#${r.quiz_number}</td>
+                  <td class="p-3">${r.grade}</td>
+                  <td class="p-3">${r.topic}</td>
+                  <td class="p-3 text-center font-bold">${r.correct_answers}/${r.total_questions}</td>
+                  <td class="p-3 text-center">
+                    <span class="px-2 py-1 rounded-full text-xs font-bold ${r.score >= 80 ? 'bg-green-100 text-green-700' : r.score >= 60 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}">
+                      ${r.score}%
+                    </span>
+                  </td>
+                  <td class="p-3 text-gray-500">${new Date(r.completed_at).toLocaleDateString('id-ID')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+    
+    function showTeacherPreview() {
+      hideAllScreens();
+      document.getElementById('teacher-preview-screen').classList.remove('hidden');
+      
+      const content = document.getElementById('teacher-preview-content');
+      content.innerHTML = `
+        <div class="text-center py-8">
+          <div class="text-6xl mb-4">🔐</div>
+          <p class="text-gray-600 text-lg mb-4">Masukkan password untuk melihat semua soal</p>
+          <input type="password" id="teacher-password" placeholder="Password" 
+            class="px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none mb-4 w-64"
+            onkeypress="if(event.key==='Enter') checkTeacherPassword()">
+          <br>
+          <button onclick="checkTeacherPassword()" class="btn-primary text-white px-6 py-3 rounded-full font-bold">
+            🔓 Buka
+          </button>
+        </div>
+      `;
+    }
+    
+    function checkTeacherPassword() {
+      const password = document.getElementById('teacher-password').value;
+      if (password === 'JanganYa') {
+        displayAllQuestions();
+      } else {
+        document.getElementById('teacher-password').classList.add('border-red-500');
+        document.getElementById('teacher-password').value = '';
+        document.getElementById('teacher-password').placeholder = 'Password salah! Coba lagi...';
+      }
+    }
+    
+    function displayAllQuestions() {
+      const content = document.getElementById('teacher-preview-content');
+      
+      let html = '<div class="space-y-8">';
+      
+      Object.entries(questionsDB).forEach(([key, topic]) => {
+        html += `
+          <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6">
+            <h3 class="text-xl font-bold text-purple-700 mb-4">
+              ${topic.icon} Kelas ${topic.grade} - ${topic.title}
+            </h3>
+            <div class="space-y-4">
+              ${topic.questions.map((q, i) => `
+                <div class="bg-white rounded-xl p-4 shadow">
+                  <p class="font-bold text-gray-800 mb-2">${i + 1}. ${q.q}</p>
+                  <div class="grid grid-cols-2 gap-2 mb-3">
+                    ${q.options.map((opt, j) => `
+                      <div class="px-3 py-2 rounded-lg ${j === q.correct ? 'bg-green-100 text-green-700 font-bold' : 'bg-gray-100'}">
+                        ${String.fromCharCode(65 + j)}. ${opt}
+                      </div>
+                    `).join('')}
+                  </div>
+                  <div class="bg-blue-50 rounded-lg p-3 text-sm text-blue-700">
+                    <strong>💡 Penjelasan:</strong> ${q.explanation}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+      
+      html += '</div>';
+      content.innerHTML = html;
+    }
+    
+    function showAllResults() {
+      hideAllScreens();
+      document.getElementById('all-results-screen').classList.remove('hidden');
+      
+      const content = document.getElementById('all-results-content');
+      content.innerHTML = `
+        <div class="text-center py-8">
+          <div class="text-6xl mb-4">🔐</div>
+          <p class="text-gray-600 text-lg mb-4">Masukkan password untuk melihat rekap seluruh siswa</p>
+          <input type="password" id="results-password" placeholder="Password" 
+            class="px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none mb-4 w-64"
+            onkeypress="if(event.key==='Enter') checkResultsPassword()">
+          <br>
+          <button onclick="checkResultsPassword()" class="btn-primary text-white px-6 py-3 rounded-full font-bold">
+            🔓 Buka
+          </button>
+        </div>
+      `;
+    }
+    
+    function checkResultsPassword() {
+      const password = document.getElementById('results-password').value;
+      if (password === 'JanganYa') {
+        displayAllResults();
+      } else {
+        document.getElementById('results-password').classList.add('border-red-500');
+        document.getElementById('results-password').value = '';
+        document.getElementById('results-password').placeholder = 'Password salah! Coba lagi...';
+      }
+    }
+    
+    function displayAllResults() {
+      const content = document.getElementById('all-results-content');
+      
+      if (allQuizResults.length === 0) {
+        content.innerHTML = `
+          <div class="text-center py-8">
+            <div class="text-6xl mb-4">📝</div>
+            <p class="text-gray-600 text-lg">Belum ada siswa yang mengerjakan quiz.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Calculate per-student statistics
+      const studentStats = {};
+      allQuizResults.forEach(r => {
+        if (!studentStats[r.student_name]) {
+          studentStats[r.student_name] = {
+            quizzes: 0,
+            totalCorrect: 0,
+            totalQuestions: 0,
+            results: []
+          };
+        }
+        studentStats[r.student_name].quizzes += 1;
+        studentStats[r.student_name].totalCorrect += r.correct_answers;
+        studentStats[r.student_name].totalQuestions += r.total_questions;
+        studentStats[r.student_name].results.push(r);
+      });
+      
+      content.innerHTML = `
+        <div class="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-6 mb-6">
+          <h3 class="text-xl font-bold text-purple-700 mb-4">📊 Ringkasan</h3>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="bg-white rounded-xl p-4 text-center shadow">
+              <div class="text-3xl font-bold text-purple-600">${Object.keys(studentStats).length}</div>
+              <div class="text-sm text-gray-600">Total Siswa</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 text-center shadow">
+              <div class="text-3xl font-bold text-blue-600">${allQuizResults.length}</div>
+              <div class="text-sm text-gray-600">Total Quiz Dikerjakan</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 text-center shadow">
+              <div class="text-3xl font-bold text-green-600">${Math.round(allQuizResults.reduce((sum, r) => sum + r.score, 0) / allQuizResults.length)}%</div>
+              <div class="text-sm text-gray-600">Rata-rata Akurasi</div>
+            </div>
+          </div>
+        </div>
+        
+        <h4 class="font-bold text-purple-700 mb-3">👨‍🎓 Statistik per Siswa:</h4>
+        <div class="overflow-x-auto mb-6">
+          <table class="w-full text-sm">
+            <thead class="bg-purple-100">
+              <tr>
+                <th class="p-3 text-left rounded-tl-xl">Nama Siswa</th>
+                <th class="p-3 text-center">Jumlah Quiz</th>
+                <th class="p-3 text-center">Jawaban Benar</th>
+                <th class="p-3 text-center">Total Soal</th>
+                <th class="p-3 text-center rounded-tr-xl">Akurasi</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${Object.entries(studentStats)
+                .sort((a, b) => (b[1].totalCorrect / b[1].totalQuestions) - (a[1].totalCorrect / a[1].totalQuestions))
+                .map(([name, stats], i) => {
+                  const accuracy = Math.round((stats.totalCorrect / stats.totalQuestions) * 100);
+                  return `
+                    <tr class="${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}">
+                      <td class="p-3 font-bold">${i + 1}. ${name}</td>
+                      <td class="p-3 text-center">${stats.quizzes}</td>
+                      <td class="p-3 text-center text-green-600 font-bold">${stats.totalCorrect}</td>
+                      <td class="p-3 text-center">${stats.totalQuestions}</td>
+                      <td class="p-3 text-center">
+                        <span class="px-3 py-1 rounded-full text-sm font-bold ${accuracy >= 80 ? 'bg-green-100 text-green-700' : accuracy >= 60 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}">
+                          ${accuracy}%
+                        </span>
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
+            </tbody>
+          </table>
+        </div>
+        
+        <h4 class="font-bold text-purple-700 mb-3">📋 Semua Hasil Quiz:</h4>
+        <div id="all-results-table" class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-purple-100">
+              <tr>
+                <th class="p-3 text-left rounded-tl-xl">Nama</th>
+                <th class="p-3 text-left">Kelas</th>
+                <th class="p-3 text-left">Materi</th>
+                <th class="p-3 text-center">Quiz #</th>
+                <th class="p-3 text-center">Skor</th>
+                <th class="p-3 text-left rounded-tr-xl">Waktu</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${allQuizResults.sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at)).map((r, i) => `
+                <tr class="${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}">
+                  <td class="p-3 font-bold">${r.student_name}</td>
+                  <td class="p-3">${r.grade}</td>
+                  <td class="p-3">${r.topic}</td>
+                  <td class="p-3 text-center text-purple-600 font-bold">#${r.quiz_number}</td>
+                  <td class="p-3 text-center">
+                    <span class="px-2 py-1 rounded-full text-xs font-bold ${r.score >= 80 ? 'bg-green-100 text-green-700' : r.score >= 60 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}">
+                      ${r.correct_answers}/${r.total_questions} (${r.score}%)
+                    </span>
+                  </td>
+                  <td class="p-3 text-gray-500">${new Date(r.completed_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+    
+    // ========== STUDENT LOGIN ==========
+    function saveStudentName() {
+      const nameInput = document.getElementById('student-name');
+      const name = nameInput.value.trim();
+      
+      if (!name) {
+        nameInput.classList.add('border-red-500');
+        nameInput.placeholder = 'Tulis namamu dulu ya! 😊';
+        return;
+      }
+      
+      currentStudentName = name;
+      localStorage.setItem('studentName', name);
+      
+      document.getElementById('login-section').classList.add('hidden');
+      document.getElementById('quiz-selection').classList.remove('hidden');
+      document.getElementById('greeting').innerHTML = `Halo, ${name}! 🎉`;
+      
+      selectGrade(4);
+    }
+    
+    // ========== GRADE SELECTION ==========
+    function selectGrade(grade) {
+      selectedGrade = grade;
+      
+      // Update button styles
+      [4, 5, 6].forEach(g => {
+        const btn = document.getElementById(`grade-${g}-btn`);
+        if (g === grade) {
+          btn.className = 'px-8 py-4 rounded-2xl font-bold text-lg transition-all bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg';
+        } else {
+          btn.className = 'px-8 py-4 rounded-2xl font-bold text-lg transition-all bg-white text-purple-600 shadow-lg hover:bg-purple-100';
+        }
+      });
+      
+      // Show topics for selected grade
+      const topics = Object.entries(questionsDB).filter(([key, topic]) => topic.grade === grade);
+      const grid = document.getElementById('topics-grid');
+      
+      grid.innerHTML = topics.map(([key, topic]) => `
+        <div class="card-gradient rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all cursor-pointer transform hover:-translate-y-1"
+             onclick="startQuiz('${key}')">
+          <div class="text-5xl mb-4 text-center">${topic.icon}</div>
+          <h3 class="text-xl font-bold text-purple-700 text-center mb-2">${topic.title}</h3>
+          <p class="text-gray-500 text-center text-sm">10 Soal Seru! 🎯</p>
+          <div class="mt-4 text-center">
+            <span class="inline-block bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-bold">
+              Mulai Quiz →
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // ========== QUIZ LOGIC ==========
+    function startQuiz(topicKey) {
+      currentQuiz = {
+        key: topicKey,
+        topic: questionsDB[topicKey],
+        questions: [...questionsDB[topicKey].questions]
+      };
+      currentQuestionIndex = 0;
+      userAnswers = new Array(10).fill(null);
+      
+      // Update quiz number
+      const quizCountKey = `${currentStudentName}_${topicKey}`;
+      quizCounts[quizCountKey] = (quizCounts[quizCountKey] || 0) + 1;
+      localStorage.setItem('quizCounts', JSON.stringify(quizCounts));
+      
+      hideAllScreens();
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      
+      document.getElementById('quiz-topic-title').textContent = currentQuiz.topic.title;
+      document.getElementById('quiz-number-badge').textContent = `Quiz #${quizCounts[quizCountKey]}`;
+      
+      displayQuestion();
+    }
+    
+    function displayQuestion() {
+      const question = currentQuiz.questions[currentQuestionIndex];
+      const container = document.getElementById('question-container');
+      
+      // Update progress
+      const progress = ((currentQuestionIndex + 1) / 10) * 100;
+      document.getElementById('progress-fill').style.width = `${progress}%`;
+      document.getElementById('quiz-progress').textContent = `${currentQuestionIndex + 1} dari 10 soal`;
+      document.getElementById('question-number').textContent = currentQuestionIndex + 1;
+      
+      // Update question
+      document.getElementById('question-text').textContent = question.q;
+      
+      // Update options
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = question.options.map((opt, i) => `
+        <button class="option-btn bg-white rounded-xl p-4 text-left font-semibold shadow-md ${userAnswers[currentQuestionIndex] === i ? 'selected' : ''}"
+                onclick="selectAnswer(${i})">
+          <span class="inline-block w-8 h-8 rounded-full bg-purple-100 text-purple-700 text-center leading-8 mr-3 font-bold">
+            ${String.fromCharCode(65 + i)}
+          </span>
+          ${opt}
+        </button>
+      `).join('');
+      
+      // Update navigation buttons
+      document.getElementById('prev-btn').classList.toggle('hidden', currentQuestionIndex === 0);
+      document.getElementById('next-btn').classList.toggle('hidden', currentQuestionIndex === 9);
+      document.getElementById('submit-btn').classList.toggle('hidden', currentQuestionIndex !== 9);
+      
+      // Animation
+      container.classList.remove('slide-in');
+      void container.offsetWidth;
+      container.classList.add('slide-in');
+    }
+    
+    function selectAnswer(index) {
+      userAnswers[currentQuestionIndex] = index;
+      
+      // Update UI
+      document.querySelectorAll('.option-btn').forEach((btn, i) => {
+        btn.classList.toggle('selected', i === index);
+      });
+    }
+    
+    function nextQuestion() {
+      if (currentQuestionIndex < 9) {
+        currentQuestionIndex++;
+        displayQuestion();
+      }
+    }
+    
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        displayQuestion();
+      }
+    }
+    
+    function exitQuiz() {
+      showHome();
+    }
+    
+    async function submitQuiz() {
+      // Calculate score
+      let correctCount = 0;
+      const reviewData = [];
+      
+      currentQuiz.questions.forEach((q, i) => {
+        const isCorrect = userAnswers[i] === q.correct;
+        if (isCorrect) correctCount++;
+        
+        reviewData.push({
+          question: q.q,
+          userAnswer: userAnswers[i] !== null ? q.options[userAnswers[i]] : 'Tidak dijawab',
+          correctAnswer: q.options[q.correct],
+          isCorrect,
+          explanation: q.explanation
+        });
+      });
+      
+      const score = Math.round((correctCount / 10) * 100);
+      const quizCountKey = `${currentStudentName}_${currentQuiz.key}`;
+      
+      // Save result to Data SDK
+      if (window.dataSdk && allQuizResults.length < 999) {
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '⏳ Menyimpan...';
+        
+        const result = await window.dataSdk.create({
+          student_name: currentStudentName,
+          grade: `Kelas ${currentQuiz.topic.grade}`,
+          topic: currentQuiz.topic.title,
+          score: score,
+          total_questions: 10,
+          correct_answers: correctCount,
+          quiz_number: quizCounts[quizCountKey],
+          completed_at: new Date().toISOString(),
+          answers_detail: JSON.stringify(reviewData.map(r => r.isCorrect ? 1 : 0))
+        });
+        
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '✅ Selesai!';
+        
+        if (!result.isOk) {
+          console.error('Failed to save quiz result');
+        }
+      }
+      
+      // Show result screen
+      showResult(correctCount, score, reviewData);
+    }
+    
+    function showResult(correctCount, score, reviewData) {
+      hideAllScreens();
+      document.getElementById('result-screen').classList.remove('hidden');
+      
+      // Update result display
+      document.getElementById('result-score').textContent = `${correctCount}/10`;
+      document.getElementById('result-percentage').textContent = `Akurasi: ${score}%`;
+      
+      // Update emoji and message based on score
+      let emoji, message;
+      if (score >= 90) {
+        emoji = '🏆';
+        message = 'LUAR BIASA! Kamu sangat hebat! Terus pertahankan ya! ⭐⭐⭐';
+      } else if (score >= 70) {
+        emoji = '🌟';
+        message = 'BAGUS SEKALI! Kamu sudah memahami materi dengan baik! 💪';
+      } else if (score >= 50) {
+        emoji = '💪';
+        message = 'BAGUS! Terus berlatih ya, kamu pasti bisa lebih baik! 📚';
+      } else {
+        emoji = '📚';
+        message = 'Jangan menyerah! Ayo belajar lagi dan coba lagi! Kamu pasti bisa! 🌈';
+      }
+      
+      document.getElementById('result-emoji').textContent = emoji;
+      document.getElementById('result-message').textContent = message;
+      
+      // Show answer review
+      const reviewList = document.getElementById('review-list');
+      reviewList.innerHTML = reviewData.map((r, i) => `
+        <div class="mb-4 p-4 rounded-xl ${r.isCorrect ? 'bg-green-50 border-2 border-green-200' : 'bg-red-50 border-2 border-red-200'}">
+          <p class="font-bold mb-2">${i + 1}. ${r.question}</p>
+          <p class="text-sm mb-1">
+            Jawabanmu: <span class="${r.isCorrect ? 'text-green-600' : 'text-red-600'} font-bold">${r.userAnswer}</span>
+            ${r.isCorrect ? '✅' : '❌'}
+          </p>
+          ${!r.isCorrect ? `<p class="text-sm text-green-600 font-bold mb-2">Jawaban benar: ${r.correctAnswer}</p>` : ''}
+          <p class="text-sm text-blue-600 bg-blue-50 p-2 rounded-lg">💡 ${r.explanation}</p>
+        </div>
+      `).join('');
+    }
+    
+    function retryQuiz() {
+      if (currentQuiz) {
+        startQuiz(currentQuiz.key);
+      } else {
+        showHome();
+      }
+    }
+    
+    // Initialize app
+    initApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d4c5df8b5708e9d',t:'MTc3MjI0NDQzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
